@@ -1,12 +1,41 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{% block title %}Game Room{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    15
+    <header>
+        <ul class="">
+            <li class="logo">&#127918;Game Room</li>
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'hiscore' %}">Hiscore</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}">&#128100; {{ user.get_username }}</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}?next={{request.path}}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Sign up</a></li>
+            {% endif %}
+            {% if user.is_authenticated %}
+                {% if user.is_staff or user.is_superuser %}
+                    <li><a href="{% url 'admin:index' %}">Admin"</a></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    </header>
+    <main>
+        {% if messages %}
+        {% for message in messages %}
+            <p class="box box-{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    {% block content %}
+    {% endblock content %}</main>
+    <footer><p>&copy; 2023 REDTEAM Game Room</p></footer>
 </body>
 </html>
