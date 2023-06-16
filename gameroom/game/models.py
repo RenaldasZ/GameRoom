@@ -7,9 +7,9 @@ User = get_user_model()
 
 # Create your models here.
 class Player(models.Model):
-    name = models.ForeignKey(
+    user = models.ForeignKey(
         User,
-        verbose_name=_("name"),
+        verbose_name=_("user"),
         related_name="players",
         on_delete=models.CASCADE)
     score = models.PositiveIntegerField(_("Score"))
@@ -20,7 +20,7 @@ class Player(models.Model):
         verbose_name_plural = _("players")
 
     def __str__(self):
-        return self.name
+        return f"{self.user}"
 
     def get_absolute_url(self):
         return reverse("player_detail", kwargs={"pk": self.pk})
