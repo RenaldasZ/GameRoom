@@ -3,13 +3,11 @@
 {% block title %}Hiscore at {{ block.super }}{% endblock title %}
 {% block content %}
 <h3>Game Room Hiscore</h3>
-{% if hiscores %}
 <ul>
-    {% for player in hiscores %}
-        <li>{{ player.score }}</li>
+    {% for player in hiscore_list %}
+        <li>kodel? {{ player }}</li>
+    {% empty %}
+        <p>No Player with score found</p>
     {% endfor %}
 </ul>
-{% else %}
-<p>No Player with score found</p>
-{% endif %}
 {% endblock content %}
