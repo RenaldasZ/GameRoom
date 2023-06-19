@@ -4,8 +4,8 @@
 {% block content %}
 <h3>Game Room Hiscore</h3>
 <ul>
-    {% for player in hiscore_list %}
-        <li>kodel? {{ player }}</li>
+    {% for player in top_players %}
+        <li> {{ player.user.username }} - {{ player.score }}</li>
     {% empty %}
         <p>No Player with score found</p>
     {% endfor %}
