@@ -1,6 +1,26 @@
 {% extends 'base.html' %}
 {% block title %}Welcome to Game Room {{ block.super }}{% endblock title %}
 {% block content %}
-<h1>Room</h1>
+<header>
+    <h1>Welcome to Card War Game</h1>
+    <p>Prepare for an epic battle of cards!</p>
+  </header>
+  <main>
+    <h2>About the Game</h2>
+    <section>
+      <p>Card War is a thrilling card battle game where you'll pit your strategic skills against opponents from around the world.</p>
+      <p>Devise cunning tactics to defeat your adversaries in epic card duels.</p>
+    </section>
+    <section>
+      <h2>How to Play</h2>
+      <p>Learn the rules, master the strategies, and become a legendary card warrior:</p>
+      <ol>
+        <li>Engage in intense card battles against other players online.</li>
+        <li>Strategically play your cards, and outsmart your opponents.</li>
+        <li>Defeat your opponents and climb the ranks to become the ultimate card war champion!</li>
+      </ol>
+    </section>
+  </main>
+
 <p>{{player}}</p>
 {% endblock content %}

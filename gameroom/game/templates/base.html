@@ -10,10 +10,10 @@
 </head>
 <body>
     <header>
-        <ul class="">
+        <ul class="nav">
             <li class="logo">&#127918;Game Room</li>
             <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'hiscore' %}">Hiscore</a></li>
+            <li><a href="{% url 'hiscore' %}">High score</a></li>
             {% if user.is_authenticated %}
             <li><a href="{% url 'profile' %}">&#128100; {{ user.get_username }}</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
@@ -36,6 +36,9 @@
     {% endif %}
     {% block content %}
     {% endblock content %}</main>
-    <footer><p>&copy; 2023 REDTEAM Game Room</p></footer>
+    <footer>
+        <p>&copy; 2023 REDTEAM Game Room</p>
+        <li><a href="https://discord.gg/AryVVZRS" target="_blank">Join Discord</a></li>
+    </footer>
 </body>
 </html>
