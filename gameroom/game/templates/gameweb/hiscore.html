@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Hiscore at {{ block.super }}{% endblock title %}
+{% block title %}High score at {{ block.super }}{% endblock title %}
 {% block content %}
-<h3>Game Room Hiscore</h3>
+<h3>Game Room High Scores</h3>
 <ul>
     {% for player in top_players %}
         <li> {{ player.user.username }} - {{ player.score }}</li>
     {% empty %}
-        <p>No Player with score found</p>
+        <p>No Player high scores found</p>
     {% endfor %}
 </ul>
 {% endblock content %}
