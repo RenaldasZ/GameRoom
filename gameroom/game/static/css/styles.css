@@ -70,7 +70,7 @@ header ul.nav li {
 
 header ul.nav a {
   text-decoration: none;
-  color: #FFFFFF;
+  color: #313131;
 }
 
 header ul.nav a:hover {
@@ -115,23 +115,23 @@ li {
   text-align: center;
   line-height: 1;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  animation: fadeColors 6s infinite;
+  animation: pulsateColor 2s infinite;
 }
 
 li:hover {
-  background: radial-gradient(circle, rgba(76, 175, 80, 1), rgba(56, 142, 60, 1));
   transform: scale(1.1);
+  color: #313131; /* Ensure text color remains consistent */
 }
 
-@keyframes fadeColors {
+@keyframes pulsateColor {
   0% {
-    color: rgba(204, 0, 255, 0.637);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   }
   50% {
-    color: rgb(12, 190, 233);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
   }
   100% {
-    color: rgb(255, 100, 60);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   }
 }
 
