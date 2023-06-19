@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'user_profile',
     'game',
+    'rest_framework',
     'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.auth',
