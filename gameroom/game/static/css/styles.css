@@ -107,7 +107,7 @@ footer p {
 
 li {
   display: inline-block;
-  background: radial-gradient(circle, #FFCC00, #FF9900);
+  background: radial-gradient(circle, rgba(255, 204, 0, 1), rgba(255, 153, 0, 1));
   color: #313131;
   margin-right: 10px;
   border-radius: 50%;
@@ -115,9 +115,24 @@ li {
   text-align: center;
   line-height: 1;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease-in-out;
+  animation: fadeColors 6s infinite;
 }
 
 li:hover {
+  background: radial-gradient(circle, rgba(76, 175, 80, 1), rgba(56, 142, 60, 1));
   transform: scale(1.1);
 }
+
+@keyframes fadeColors {
+  0% {
+    color: rgba(204, 0, 255, 0.637);
+  }
+  50% {
+    color: rgb(12, 190, 233);
+  }
+  100% {
+    color: rgb(255, 100, 60);
+  }
+}
+
+
