@@ -1,6 +1,4 @@
-
-
-
+# server.py
 import socket
 import pickle
 import random

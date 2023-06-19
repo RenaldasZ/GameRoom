@@ -3,7 +3,12 @@ from rest_framework import serializers
 
 
 class PlayerSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+    user_id = serializers.ReadOnlyField(source='user.id')
 
     class Meta:
         model = models.Player
-        fields = ['user', 'score']
+        fields = ['id', 'user', 'user_id', 'score']
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
