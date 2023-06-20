@@ -5,6 +5,10 @@ import pygame
 import socket
 import pickle
 from card import Card
+import http.client
+import json
+from login import LoginScreen
+
 
 class CardGame:
     def __init__(self):
@@ -24,10 +28,37 @@ class CardGame:
         self.BLACK = (0, 0, 0)
         self.CARD_IMAGE_WIDTH = 90
 
+        # Create a login screen and run it
+        self.login_screen = LoginScreen()
+        self.login_screen.run()
+
+        # Get user login credentials from the login screen
+        self.username = self.login_screen.username
+        self.password = self.login_screen.password
+
 
         # Connect to the server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_address = ('localhost', 5000)
+        self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
+        self.headers = {
+        "Accept": "*/*",
+        "User-Agent": "war game client",
+        "Content-Type": "application/json" 
+        }
+        payload = json.dumps({
+        "username": self.username,
+        "password": self.password
+        })
+        try:
+            self.score_server.request("POST", "/api-token-auth/", payload, self.headers)
+            response = self.score_server.getresponse()
+        except Exception as e:
+            print(e)
+        else:
+            result = json.loads(response.read())
+            print(result['token'])
+            self.score_server_token = result['token']
 
         try:
             self.client_socket.connect(self.server_address)
@@ -45,6 +76,7 @@ class CardGame:
             self.client_socket.close()
             pygame.quit()
             return
+        
 
         # Initialize player scores
         self.player1_score = 0
@@ -121,12 +153,14 @@ class CardGame:
 
         # Display player scores
         font = pygame.font.Font(None, 30)
-        player1_score_text = font.render("Player 1 Score: " + str(self.player1_score), True, self.BLACK)
-        player2_score_text = font.render("Player 2 Score: " + str(self.player2_score), True, self.BLACK)
+        player1_score_text = font.render(f"{self.username} Score: " + str(self.player1_score), True, self.BLACK)
+        player2_score_text = font.render(f"opponents Score: " + str(self.player2_score), True, self.BLACK)
         self.screen.blit(player1_score_text, (20, 20))
         self.screen.blit(player2_score_text, (20, 60))
 
         pygame.display.flip()
+
+
 
     def run(self):
         self.running = True
@@ -142,127 +176,3 @@ if __name__ == '__main__':
     game.run()
 
 
-# server.py
-import socket
-import pickle
-import random
-from card import Card
-
-def create_socket(address, port):
-    # Create a TCP/IP socket
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # Bind the socket to a specific address and port
-    server_address = (address, port)
-    server_socket.bind(server_address)
-    # Listen for incoming connections
-    server_socket.listen(2)
-    print('Waiting for connections...')
-    return server_socket
-
-def accept_connection(server_socket):
-    # Accept player connections
-    player_socket, player_address = server_socket.accept()
-    print('Player connected:', player_address)
-    return player_socket, player_address
-
-def create_deck():
-    suits = ['hearts', 'diamonds', 'clubs', 'spades']
-    ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king', 'ace']
-    deck = [Card(suit, rank) for suit in suits for rank in ranks]
-    random.shuffle(deck)
-    return deck
-
-def send_initial_hands(player_socket, player_hand):
-    player_socket.sendall(pickle.dumps(player_hand))
-
-def receive_card_choice(player_socket):
-    card_choice = pickle.loads(player_socket.recv(1024))
-    print('Player chose:', card_choice)
-    return card_choice
-
-def update_scores(player1_choice, player2_choice, player1_score, player2_score):
-    if player1_choice == player2_choice:
-        result = 'It\'s a tie!'
-    elif player1_choice > player2_choice:
-        result = 'Player 1 wins!'
-        player1_score += 1
-        print(result, "score:", player1_score)
-    else:
-        result = 'Player 2 wins!'
-        player2_score += 1
-        print(result, "score:", player2_score)
-    return result, player1_score, player2_score
-
-def send_result_and_scores(player1_socket, player2_socket, result, player1_score, player2_score):
-    player1_socket.sendall(pickle.dumps((result, player1_score, player2_score)))
-    player2_socket.sendall(pickle.dumps((result, player1_score, player2_score)))
-
-def close_connections(player1_socket, player2_socket, server_socket):
-    player1_socket.close()
-    player2_socket.close()
-    server_socket.close()
-
-def main():
-    # Create a server socket
-    server_socket = create_socket('localhost', 5000)
-
-    # Accept player connections
-    player1_socket, player1_address = accept_connection(server_socket)
-    player2_socket, player2_address = accept_connection(server_socket)
-
-    # Create the deck
-    deck = create_deck()
-
-    # Initialize scores
-    player1_score = 0
-    player2_score = 0
-
-    # Send the initial hands to the players
-    player1_hand = deck[:26]
-    player2_hand = deck[26:]
-    send_initial_hands(player1_socket, player1_hand)
-    send_initial_hands(player2_socket, player2_hand)
-
-    # Send and receive data with the players
-    while True:
-        try:
-            # Receive card choice from player 1
-            player1_choice = receive_card_choice(player1_socket)
-
-            # Receive card choice from player 2
-            player2_choice = receive_card_choice(player2_socket)
-
-            if player1_choice.rank == player2_choice.rank:
-                result = 'It\'s a tie!'
-                player1_score += 1
-                player2_score += 1
-                print(result, "Player 1 score:", player1_score, "Player 2 score:", player2_score)
-            else:
-                # Update scores based on card choices
-                result, player1_score, player2_score = update_scores(player1_choice, player2_choice, player1_score, player2_score)
-                
-            # Send the result and scores to both players
-            send_result_and_scores(player1_socket, player2_socket, result, player1_score, player2_score)
-
-        except Exception as e:
-            print('Error:', e)
-            break
-
-    # Close the connections
-    close_connections(player1_socket, player2_socket, server_socket)
-
-if __name__ == '__main__':
-    main()
-
-
-#card.py
-class Card:
-    def __init__(self, suit, rank):
-        self.suit = suit
-        self.rank = rank
-
-    def __str__(self):
-        return f'{self.rank} of {self.suit}'
-
-    def __gt__(self, other):
-        return self.rank > other.rank

@@ -10,5 +10,3 @@ class PlayerSerializer(serializers.ModelSerializer):
         model = models.Player
         fields = ['id', 'user', 'user_id', 'score']
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)

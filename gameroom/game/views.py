@@ -24,6 +24,12 @@ class HiScoreListView(View):
 
 
 class PlayerList(generics.ListCreateAPIView):
-    queryset = models.Player.objects.all()
+    # queryset = models.Player.objects.all()
     serializer_class = serializers.PlayerSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return models.Player.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

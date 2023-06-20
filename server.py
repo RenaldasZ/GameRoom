@@ -18,6 +18,7 @@ def create_socket(address, port):
 def accept_connection(server_socket):
     # Accept player connections
     player_socket, player_address = server_socket.accept()
+    
     print('Player connected:', player_address)
     return player_socket, player_address
 
