@@ -36,7 +36,6 @@ class CardGame:
         self.username = self.login_screen.username
         self.password = self.login_screen.password
 
-
         # Connect to the server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_address = ('localhost', 5000)
@@ -68,6 +67,22 @@ class CardGame:
             pygame.quit()
             return
         
+        try:
+            self.client_socket.sendall(pickle.dumps(self.username))
+        except pickle.PicklingError:
+            print("Failed to send user name to the server.")
+            self.client_socket.close()
+            pygame.quit()
+            return
+
+        try:
+            self.opponent_username = pickle.loads(self.client_socket.recv(1024))
+        except pickle.UnpicklingError:
+            print('Failed to receive the opponent\'s name from the server.')
+            self.client_socket.close()
+            pygame.quit()
+            return
+
         # Receive the initial hand from the server
         try:
             self.player_hand = pickle.loads(self.client_socket.recv(1024))
@@ -76,8 +91,7 @@ class CardGame:
             self.client_socket.close()
             pygame.quit()
             return
-        
-
+    
         # Initialize player scores
         self.player1_score = 0
         self.player2_score = 0    
@@ -154,13 +168,11 @@ class CardGame:
         # Display player scores
         font = pygame.font.Font(None, 30)
         player1_score_text = font.render(f"{self.username} Score: " + str(self.player1_score), True, self.BLACK)
-        player2_score_text = font.render(f"opponents Score: " + str(self.player2_score), True, self.BLACK)
+        player2_score_text = font.render(f"{self.opponent_username} Score: " + str(self.player2_score), True, self.BLACK)
         self.screen.blit(player1_score_text, (20, 20))
         self.screen.blit(player2_score_text, (20, 60))
 
         pygame.display.flip()
-
-
 
     def run(self):
         self.running = True
