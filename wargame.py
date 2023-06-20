@@ -94,7 +94,8 @@ class CardGame:
     
         # Initialize player scores
         self.player1_score = 0
-        self.player2_score = 0    
+        self.player2_score = 0   
+        self.final_score = 0 
 
         # Load card images
         self.card_images = {}
@@ -108,6 +109,8 @@ class CardGame:
                 card_image = pygame.image.load(card_image_path)
                 card_image = pygame.transform.scale(card_image, (self.CARD_IMAGE_WIDTH, int(self.CARD_IMAGE_WIDTH * card_image.get_height() / card_image.get_width())))
                 self.card_images[card_name] = card_image
+
+        
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -150,6 +153,33 @@ class CardGame:
 
                             # Remove the chosen card from the player's hand
                             self.player_hand.pop(i)
+                        
+                            # Check if the player's hand is empty
+                            if len(self.player_hand) == 0:
+                                self.game_over = True
+                                print("game over!")
+                            # Check players scores
+                                if player1_score > player2_score:
+                                    self.final_score = self.final_score+5
+                                elif player1_score < player2_score:
+                                    self.final_score = self.final_score+1
+                                else:
+                                    self.final_score = self.final_score+1
+
+    def send_points_to_django(self):
+        self.score_server = http.client.HTTPSConnection("127.0.0.1", 8000)
+        self.headers = {
+        "Accept": "*/*",
+        "User-Agent": "war game client",
+        "Authorization": f"Token{result['token']}",
+        "Content-Type": "application/json" 
+        }
+        payload = json.dumps({
+        "score": self.final_score
+        })
+        self.score_server.request("POST", "/player/", payload, self.headers)
+        response = self.score_server.getresponse()
+        result = response.read()
 
     def display_cards(self):
         self.screen.fill(self.WHITE)
