@@ -52,7 +52,7 @@ def update_scores(player1_choice, player2_choice, player1_score, player2_score):
 
 def send_result_and_scores(player1_socket, player2_socket, result, player1_score, player2_score):
     player1_socket.sendall(pickle.dumps((result, player1_score, player2_score)))
-    player2_socket.sendall(pickle.dumps((result, player1_score, player2_score)))
+    player2_socket.sendall(pickle.dumps((result, player2_score, player1_score)))
 
 def close_connections(player1_socket, player2_socket, server_socket):
     player1_socket.close()
