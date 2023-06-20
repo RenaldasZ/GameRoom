@@ -36,6 +36,9 @@ class CardGame:
         self.username = self.login_screen.username
         self.password = self.login_screen.password
 
+        # Flag to indicate if the game is over
+        self.game_over = False
+
         # Connect to the server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_address = ('localhost', 5000)
@@ -66,28 +69,12 @@ class CardGame:
             print('Failed to connect to the server. Please make sure the server is running.')
             pygame.quit()
             return
-        
         try:
             self.client_socket.sendall(pickle.dumps(self.username))
-        except pickle.PicklingError:
-            print("Failed to send user name to the server.")
-            self.client_socket.close()
-            pygame.quit()
-            return
-
-        try:
             self.opponent_username = pickle.loads(self.client_socket.recv(1024))
-        except pickle.UnpicklingError:
-            print('Failed to receive the opponent\'s name from the server.')
-            self.client_socket.close()
-            pygame.quit()
-            return
-
-        # Receive the initial hand from the server
-        try:
             self.player_hand = pickle.loads(self.client_socket.recv(1024))
-        except pickle.UnpicklingError:
-            print('Failed to receive the initial hand from the server.')
+        except (pickle.PicklingError, pickle.UnpicklingError, socket.error) as e:
+            print('Failed to initialize the game:', e)
             self.client_socket.close()
             pygame.quit()
             return
