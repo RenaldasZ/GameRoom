@@ -1,7 +1,14 @@
+
+
+# wargame.py
 import pygame
 import socket
 import pickle
 from card import Card
+import http.client
+import json
+from login import LoginScreen
+
 
 class CardGame:
     def __init__(self):
@@ -21,10 +28,37 @@ class CardGame:
         self.BLACK = (0, 0, 0)
         self.CARD_IMAGE_WIDTH = 90
 
+        # Create a login screen and run it
+        self.login_screen = LoginScreen()
+        self.login_screen.run()
+
+        # Get user login credentials from the login screen
+        self.username = self.login_screen.username
+        self.password = self.login_screen.password
+
 
         # Connect to the server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_address = ('localhost', 5000)
+        self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
+        self.headers = {
+        "Accept": "*/*",
+        "User-Agent": "war game client",
+        "Content-Type": "application/json" 
+        }
+        payload = json.dumps({
+        "username": self.username,
+        "password": self.password
+        })
+        try:
+            self.score_server.request("POST", "/api-token-auth/", payload, self.headers)
+            response = self.score_server.getresponse()
+        except Exception as e:
+            print(e)
+        else:
+            result = json.loads(response.read())
+            print(result['token'])
+            self.score_server_token = result['token']
 
         try:
             self.client_socket.connect(self.server_address)
@@ -42,6 +76,7 @@ class CardGame:
             self.client_socket.close()
             pygame.quit()
             return
+        
 
         # Initialize player scores
         self.player1_score = 0
@@ -118,12 +153,14 @@ class CardGame:
 
         # Display player scores
         font = pygame.font.Font(None, 30)
-        player1_score_text = font.render("Player 1 Score: " + str(self.player1_score), True, self.BLACK)
-        player2_score_text = font.render("Player 2 Score: " + str(self.player2_score), True, self.BLACK)
+        player1_score_text = font.render(f"{self.username} Score: " + str(self.player1_score), True, self.BLACK)
+        player2_score_text = font.render(f"opponents Score: " + str(self.player2_score), True, self.BLACK)
         self.screen.blit(player1_score_text, (20, 20))
         self.screen.blit(player2_score_text, (20, 60))
 
         pygame.display.flip()
+
+
 
     def run(self):
         self.running = True
@@ -137,3 +174,5 @@ class CardGame:
 if __name__ == '__main__':
     game = CardGame()
     game.run()
+
+
