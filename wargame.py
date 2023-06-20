@@ -142,36 +142,20 @@ class CardGame:
                             if len(self.player_hand) == 0:
                                 self.game_over = True
                                 print("game over!")
-
-                            # Check players scores
-                                if player1_score > player2_score:
-                                    self.final_score = self.final_score+5
-                                    self.final_score = CardGame()
-                                    self.final_score.send_points_to_django()
-                                elif player1_score < player2_score:
-                                    self.final_score = self.final_score+1
-                                    self.final_score = CardGame()
-                                    self.final_score.send_points_to_django()
-                                else:
-                                    self.final_score = self.final_score+1
-                                    self.final_score = CardGame()
-                                    self.final_score.send_points_to_django()
-
-    def send_points_to_django(self):
-        self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
-        self.headers = {
-        "Accept": "*/*",
-        "User-Agent": "war game client",
-        "Authorization": "Token " + self.score_server_token,
-        "Content-Type": "application/json" 
-        }
-        payload = json.dumps({
-        "score": self.final_score
-        })
-        self.score_server.request("POST", "/player/", payload, self.headers)
-        response = self.score_server.getresponse()
-        result = response.read()
-
+                                
+                                self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
+                                self.headers = {
+                                "Accept": "*/*",
+                                "User-Agent": "war game client",
+                                "Authorization": "Token " + self.score_server_token,
+                                "Content-Type": "application/json" 
+                                }
+                                payload = json.dumps({
+                                "score": self.player1_score
+                                })
+                                self.score_server.request("POST", "/player/", payload, self.headers)
+                                response = self.score_server.getresponse()
+                                result = response.read()
 
     def display_cards(self):
         self.screen.fill(self.WHITE)
