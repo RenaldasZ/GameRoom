@@ -12,6 +12,8 @@ class LoginScreen:
         self.font = pygame.font.Font(None, 32)
         self.username = ''
         self.password = ''
+        self.username_active = True
+        self.password_active = False
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -35,7 +37,6 @@ class LoginScreen:
                         self.username += event.unicode
                     elif self.is_password_active():
                         self.password += event.unicode
-
         return None
 
     def display(self):
@@ -69,9 +70,6 @@ class LoginScreen:
         self.password_active = not self.is_password_active()
 
     def run(self):
-        self.username_active = True
-        self.password_active = False
-
         while True:
             result = self.handle_events()
             if result is not None:
@@ -93,5 +91,5 @@ class CardGame:
 
         # ... (the rest of your code)
 
-game = CardGame()
-game.run()
+CardGame()
+

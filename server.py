@@ -74,11 +74,20 @@ def main():
     player1_score = 0
     player2_score = 0
 
+    player1_username = pickle.loads(player1_socket.recv(1024))
+    player2_username = pickle.loads(player2_socket.recv(1024))
+    print(f"Player one: {player1_username}")
+    print(f"Player two: {player2_username}")
+
+    player1_socket.sendall(pickle.dumps(player2_username))
+    player2_socket.sendall(pickle.dumps(player1_username))
+
     # Send the initial hands to the players
     player1_hand = deck[:26]
     player2_hand = deck[26:]
     send_initial_hands(player1_socket, player1_hand)
     send_initial_hands(player2_socket, player2_hand)
+
 
     # Send and receive data with the players
     while True:
