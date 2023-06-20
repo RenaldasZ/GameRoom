@@ -33,9 +33,9 @@ class LoginScreen:
                     if self.username and self.password:
                         return True
                 else:
-                    if self.is_username_active():
+                    if self.is_username_active() and len(self.username) < 25:
                         self.username += event.unicode
-                    elif self.is_password_active():
+                    elif self.is_password_active() and len(self.password) < 30:
                         self.password += event.unicode
         return None
 
@@ -44,18 +44,32 @@ class LoginScreen:
         title_text = self.font.render('Login', True, self.BLACK)
         username_text = self.font.render('Username:', True, self.BLACK)
         password_text = self.font.render('Password:', True, self.BLACK)
-        username_input = self.font.render(self.username, True, self.BLACK)
+
+        # Truncate the username to a maximum of 25 characters
+        truncated_username = self.username[:25]
+
+        username_input = self.font.render(truncated_username, True, self.BLACK)
         password_input = self.font.render('*' * len(self.password), True, self.BLACK)
         username_rect = pygame.Rect(200, 200, 400, 50)
         password_rect = pygame.Rect(200, 300, 400, 50)
         pygame.draw.rect(self.screen, self.BLACK, username_rect, 2)
         pygame.draw.rect(self.screen, self.BLACK, password_rect, 2)
         self.screen.blit(title_text, (self.screen_width // 2 - title_text.get_width() // 2, 100))
-        self.screen.blit(username_text, (100, 200))
-        self.screen.blit(password_text, (100, 300))
-        self.screen.blit(username_input, (210, 210))
-        self.screen.blit(password_input, (210, 310))
+        self.screen.blit(username_text, (76, 211))
+        self.screen.blit(password_text, (82, 312))
+
+        # Adjust the X coordinate to center the text in the input boxes
+        username_input_x = 210 + (380 - username_input.get_width()) // 2
+        password_input_x = 210 + (380 - password_input.get_width()) // 2
+
+        # Adjust the Y coordinate to center the text vertically
+        username_input_y = 214
+        password_input_y = 319
+
+        self.screen.blit(username_input, (username_input_x, username_input_y))
+        self.screen.blit(password_input, (password_input_x, password_input_y))
         pygame.display.flip()
+
 
     def is_username_active(self):
         return self.username_active
