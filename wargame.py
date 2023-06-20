@@ -140,7 +140,6 @@ class CardGame:
 
                             # Remove the chosen card from the player's hand
                             self.player_hand.pop(i)
-                        
                             # Check if the player's hand is empty
                             if len(self.player_hand) == 0:
                                 self.game_over = True
@@ -148,10 +147,16 @@ class CardGame:
                             # Check players scores
                                 if player1_score > player2_score:
                                     self.final_score = self.final_score+5
+                                    self.final_score = CardGame()
+                                    self.final_score.send_points_to_django()
                                 elif player1_score < player2_score:
                                     self.final_score = self.final_score+1
+                                    self.final_score = CardGame()
+                                    self.final_score.send_points_to_django()
                                 else:
                                     self.final_score = self.final_score+1
+                                    self.final_score = CardGame()
+                                    self.final_score.send_points_to_django()
 
     def send_points_to_django(self):
         self.score_server = http.client.HTTPSConnection("127.0.0.1", 8000)
@@ -203,5 +208,3 @@ class CardGame:
 if __name__ == '__main__':
     game = CardGame()
     game.run()
-
-
