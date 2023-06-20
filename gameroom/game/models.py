@@ -12,10 +12,12 @@ class Player(models.Model):
         verbose_name=_("user"),
         related_name="players",
         on_delete=models.CASCADE)
-    score = models.PositiveIntegerField(_("Score"))
+    score = models.PositiveIntegerField(_("Score"), db_index=True)
+    played = models.DateTimeField(_("Played"), auto_now_add=True, null=True, blank=True)
     
 
     class Meta:
+        ordering = ['played', 'score']
         verbose_name = _("player")
         verbose_name_plural = _("players")
 

@@ -159,11 +159,11 @@ class CardGame:
                                     self.final_score.send_points_to_django()
 
     def send_points_to_django(self):
-        self.score_server = http.client.HTTPSConnection("127.0.0.1", 8000)
+        self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
         self.headers = {
         "Accept": "*/*",
         "User-Agent": "war game client",
-        "Authorization": f"Token{result['token']}",
+        "Authorization": "Token " + self.score_server_token,
         "Content-Type": "application/json" 
         }
         payload = json.dumps({
