@@ -41,7 +41,7 @@ class CardGame:
 
         # Connect to the server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_address = ('localhost', 5000)
+        self.server_address = ('127.0.0.1', 5000)
         self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
         self.headers = {
         "Accept": "*/*",
