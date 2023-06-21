@@ -125,8 +125,8 @@ class CardGame:
                 self.process_chosen_card(chosen_card)
 
     def check_clicked_card(self, mouse_x, mouse_y):
-        for i, card in enumerate(self.player_hand):
-            x = 100 + i * (self.card_width + 10)
+        for i, card in enumerate(self.player_hand[:-4]):
+            x = 100 + i * (self.card_width - 40)
             y = self.screen_height - self.card_height - 100
 
             if x <= mouse_x <= x + self.card_width and y <= mouse_y <= y + self.card_height:
@@ -206,16 +206,16 @@ class CardGame:
     def display_cards(self):
         self.screen.blit(self.background, (0, 0))
         # Display the player's hand
-        for i, card in enumerate(self.player_hand):
-            x = 100 + i * (self.card_width - 10)
+        for i, card in enumerate(self.player_hand[:4]):
+            x = 100 + i * (self.card_width - 40)
             y = self.screen_height - self.card_height - 100
             pygame.draw.rect(self.screen, self.BLACK, (x, y, self.card_width, self.card_height))
             pygame.draw.rect(self.screen, self.WHITE, (x, y, self.card_width, self.card_height))
             card_name = f"{card.rank}_of_{card.suit}".lower()
             card_image = self.card_images.get(card_name)
             if card_image:
-                card_image = pygame.transform.scale(card_image, (self.card_width - 2, self.card_height - 2))  # Resize the card image
-                self.screen.blit(card_image, (x + 1, y + 2))
+                card_image = pygame.transform.scale(card_image, (self.card_width, self.card_height))  # Resize the card image
+                self.screen.blit(card_image, (x, y))
 
         # Display player scores
         font = pygame.font.Font(None, 30)
