@@ -21,6 +21,10 @@ class CardGame:
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption('Card Game')
 
+        # load bg image and change scale
+        self.background = pygame.image.load('cards/game_bg.jpg')
+        self.background = pygame.transform.scale(self.background, (self.screen_width, self.screen_height))
+
         # Set up card dimensions
         self.card_width, self.card_height = 180, int(180 * 140 / 100)
 
@@ -99,8 +103,10 @@ class CardGame:
                 self.card_images[card_name] = card_image
 
     def opponents_turn(self):
-        title_text = self.font.render('Opponents turn!', True, self.WHITE)
-        self.screen.blit(title_text, (200, 200))
+        title_text = self.font.render(f"{self.opponent_username} Turn!", True, self.WHITE)
+        title2_text = self.font.render(f"please wait for your turn.", True, self.WHITE)
+        self.screen.blit(title_text, (self.screen_width / 2 - 60, 100))
+        self.screen.blit(title2_text, (self.screen_width / 2 - 120, 120))
         pygame.display.flip()
 
     def handle_events(self):
@@ -165,7 +171,22 @@ class CardGame:
 
     def winner_display(self):
         if self.player1_score > self.player2_score:
-            pass    
+            font = pygame.font.Font(None, 40)
+            game_winner = font.render(f"Winner {self.username}", True, self.WHITE)
+            self.screen.blit(game_winner, (300, 200))
+            print("Winner")
+        elif self.player1_score < self.player2_score:
+            font = pygame.font.Font(None, 40)
+            game_loser = font.render(f"Loser! {self.username}", True, self.WHITE)
+            self.screen.blit(game_loser, (300, 200))
+            print("Loser")
+        else:
+            font = pygame.font.Font(None, 40)
+            game_tie = font.render(f"Tie! That\'s a miracle!", True, self.WHITE)
+            self.screen.blit(game_tie, (200, 200))
+            print("Tie! That\'s a miracle!")
+
+
 
     def send_player_score_to_server(self):
         self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
@@ -183,16 +204,13 @@ class CardGame:
         result = response.read()
 
     def display_cards(self):
-        background = pygame.image.load('cards/game_bg.jpg')
-        background = pygame.transform.scale(background, (self.screen_width, self.screen_height))
-        self.screen.blit(background, (0, 0))
-
+        self.screen.blit(self.background, (0, 0))
         # Display the player's hand
         for i, card in enumerate(self.player_hand):
-            x = 100 + i * (self.card_width - 80)
+            x = 100 + i * (self.card_width - 10)
             y = self.screen_height - self.card_height - 100
-            # pygame.draw.rect(self.screen, self.BLACK, (x, y, self.card_width, self.card_height))
-            # pygame.draw.rect(self.screen, self.WHITE, (x, y, self.card_width, self.card_height))
+            pygame.draw.rect(self.screen, self.BLACK, (x, y, self.card_width, self.card_height))
+            pygame.draw.rect(self.screen, self.WHITE, (x, y, self.card_width, self.card_height))
             card_name = f"{card.rank}_of_{card.suit}".lower()
             card_image = self.card_images.get(card_name)
             if card_image:
@@ -206,6 +224,8 @@ class CardGame:
         self.screen.blit(player1_score_text, (20, 20))
         self.screen.blit(player2_score_text, (20, 60))
 
+        if self.game_over == True:  
+            self.winner_display()  # Call the winner_display method
         pygame.display.flip()
 
     def run(self):

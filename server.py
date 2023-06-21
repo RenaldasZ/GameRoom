@@ -38,7 +38,7 @@ def receive_card_choice(player_socket):
     return card_choice
 
 def update_scores(player1_choice, player2_choice, player1_score, player2_score):
-    if player1_choice == player2_choice:
+    if player1_choice == player2_choice or player2_choice == player1_score:
         result = 'It\'s a tie!'
     elif player1_choice > player2_choice:
         result = 'Player 1 wins!'
