@@ -1,3 +1,6 @@
+
+
+
 # wargame.py
 import pygame
 import socket
@@ -95,77 +98,92 @@ class CardGame:
                 card_image = pygame.transform.scale(card_image, (self.CARD_IMAGE_WIDTH, int(self.CARD_IMAGE_WIDTH * card_image.get_height() / card_image.get_width())))
                 self.card_images[card_name] = card_image
 
-    def turn_player_display(self):
-        
+    def opponents_turn(self):
         title_text = self.font.render('Opponents turn!', True, self.WHITE)
         self.screen.blit(title_text, (200, 200))
         pygame.display.flip()
-        
+
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                self.handle_mouse_button_down(event)
 
-                    # Check if the mouse click was on a card
-                    for i, card in enumerate(self.player_hand):
-                        x = 100 + i * (self.card_width + 10)
-                        y = self.screen_height - self.card_height - 100
+    def handle_mouse_button_down(self, event):
+        if event.button == 1:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            chosen_card = self.check_clicked_card(mouse_x, mouse_y)
+            if chosen_card is not None:
+                self.process_chosen_card(chosen_card)
 
-                        if x <= mouse_x <= x + self.card_width and y <= mouse_y <= y + self.card_height:
-                            chosen_card = self.player_hand[i]
-                            print("Player chose:", chosen_card)
-                            self.turn_player_display()
+    def check_clicked_card(self, mouse_x, mouse_y):
+        for i, card in enumerate(self.player_hand):
+            x = 100 + i * (self.card_width + 10)
+            y = self.screen_height - self.card_height - 100
 
+            if x <= mouse_x <= x + self.card_width and y <= mouse_y <= y + self.card_height:
+                return self.player_hand[i]
 
-                            # Serialize and send the chosen card to the server
-                            try:
-                                serialized_card = pickle.dumps(chosen_card)
-                                self.client_socket.sendall(serialized_card)
-                            except (pickle.PickleError, socket.error):
-                                print('Failed to send the chosen card to the server.')
-                                self.client_socket.close()
-                                pygame.quit()
-                                return
-                            
-                            # Receive the result and scores from the server
-                            try:
-                                result, player1_score, player2_score = pickle.loads(self.client_socket.recv(1024))
-                                self.player1_score = player1_score
-                                self.player2_score = player2_score
-                            except pickle.UnpicklingError:
-                                print('Failed to receive the result and scores from the server.')
-                                self.client_socket.close()
-                                pygame.quit()
-                                return
+        return None
+    
+    def process_chosen_card(self, chosen_card):
+        print("Player chose:", chosen_card)
+        self.opponents_turn()
 
-                            # Remove the chosen card from the player's hand
-                            self.player_hand.pop(i)
+        # Serialize and send the chosen card to the server
+        try:
+            serialized_card = pickle.dumps(chosen_card)
+            self.client_socket.sendall(serialized_card)
+        except (pickle.PickleError, socket.error):
+            print('Failed to send the chosen card to the server.')
+            self.client_socket.close()
+            pygame.quit()
+            return
 
-                            # Check if the player's hand is empty
-                            if len(self.player_hand) == 0:
-                                self.game_over = True
-                                print("game over!")
-                                
-                                self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
-                                self.headers = {
-                                "Accept": "*/*",
-                                "User-Agent": "war game client",
-                                "Authorization": "Token " + self.score_server_token,
-                                "Content-Type": "application/json" 
-                                }
-                                payload = json.dumps({
-                                "score": self.player1_score
-                                })
-                                self.score_server.request("POST", "/player/", payload, self.headers)
-                                response = self.score_server.getresponse()
-                                result = response.read()
+        # Receive the result and scores from the server
+        try:
+            result, player1_score, player2_score = pickle.loads(self.client_socket.recv(1024))
+            self.player1_score = player1_score
+            self.player2_score = player2_score
+        except pickle.UnpicklingError:
+            print('Failed to receive the result and scores from the server.')
+            self.client_socket.close()
+            pygame.quit()
+            return
+
+        # Remove the chosen card from the player's hand
+        self.player_hand.remove(chosen_card)
+
+        # Check if the player's hand is empty
+        if len(self.player_hand) == 0:
+            self.game_over = True
+            print("Match is over!")
+
+            self.send_player_score_to_server()
+
+    def winner_display(self):
+        if self.player1_score > self.player2_score:
+            pass    
+
+    def send_player_score_to_server(self):
+        self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
+        self.headers = {
+            "Accept": "*/*",
+            "User-Agent": "war game client",
+            "Authorization": "Token " + self.score_server_token,
+            "Content-Type": "application/json"
+        }
+        payload = json.dumps({
+            "score": self.player1_score
+        })
+        self.score_server.request("POST", "/player/", payload, self.headers)
+        response = self.score_server.getresponse()
+        result = response.read()
 
     def display_cards(self):
-        background = pygame.image.load('cards/game_bg.jpg')  # Replace 'background.jpg' with the actual file name and extension
+        background = pygame.image.load('cards/game_bg.jpg')
         background = pygame.transform.scale(background, (self.screen_width, self.screen_height))
         self.screen.blit(background, (0, 0))
 
