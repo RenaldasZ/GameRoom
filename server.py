@@ -61,7 +61,7 @@ def close_connections(player1_socket, player2_socket, server_socket):
 
 def main():
     # Create a server socket
-    server_socket = create_socket('localhost', 5000)
+    server_socket = create_socket('127.0.0.1', 5000)
 
     # Accept player connections
     player1_socket, player1_address = accept_connection(server_socket)
