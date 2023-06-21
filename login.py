@@ -40,10 +40,12 @@ class LoginScreen:
         return None
 
     def display(self):
-        self.screen.fill(self.WHITE)
-        title_text = self.font.render('Login', True, self.BLACK)
-        username_text = self.font.render('Username:', True, self.BLACK)
-        password_text = self.font.render('Password:', True, self.BLACK)
+        background = pygame.image.load('cards/login_bg.jpg')  # Replace 'background.jpg' with the actual file name and extension
+        background = pygame.transform.scale(background, (self.screen_width, self.screen_height))
+        self.screen.blit(background, (0, 0))
+        title_text = self.font.render('Login', True, self.WHITE)
+        username_text = self.font.render('Username:', True, self.WHITE)
+        password_text = self.font.render('Password:', True, self.WHITE)
 
         # Truncate the username to a maximum of 25 characters
         truncated_username = self.username[:25]
@@ -52,8 +54,8 @@ class LoginScreen:
         password_input = self.font.render('*' * len(self.password), True, self.BLACK)
         username_rect = pygame.Rect(200, 200, 400, 50)
         password_rect = pygame.Rect(200, 300, 400, 50)
-        pygame.draw.rect(self.screen, self.BLACK, username_rect, 2)
-        pygame.draw.rect(self.screen, self.BLACK, password_rect, 2)
+        pygame.draw.rect(self.screen, self.WHITE, username_rect, 2)
+        pygame.draw.rect(self.screen, self.WHITE, password_rect, 2)
         self.screen.blit(title_text, (self.screen_width // 2 - title_text.get_width() // 2, 100))
         self.screen.blit(username_text, (76, 211))
         self.screen.blit(password_text, (82, 312))

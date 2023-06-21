@@ -93,9 +93,11 @@ def main():
     while True:
         try:
             # Receive card choice from player 1
+            print(f"{player1_username} turn!")
             player1_choice = receive_card_choice(player1_socket)
 
             # Receive card choice from player 2
+            print(f"{player2_username} turn!")
             player2_choice = receive_card_choice(player2_socket)
 
             if player1_choice.rank == player2_choice.rank:

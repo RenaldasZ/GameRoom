@@ -1,5 +1,3 @@
-
-
 # wargame.py
 import pygame
 import socket
@@ -27,6 +25,7 @@ class CardGame:
         self.WHITE = (255, 255, 255)
         self.BLACK = (0, 0, 0)
         self.CARD_IMAGE_WIDTH = 180
+        self.font = pygame.font.Font(None, 30)
 
         # Create a login screen and run it
         self.login_screen = LoginScreen()
@@ -96,6 +95,12 @@ class CardGame:
                 card_image = pygame.transform.scale(card_image, (self.CARD_IMAGE_WIDTH, int(self.CARD_IMAGE_WIDTH * card_image.get_height() / card_image.get_width())))
                 self.card_images[card_name] = card_image
 
+    def turn_player_display(self):
+        
+        title_text = self.font.render('Opponents turn!', True, self.WHITE)
+        self.screen.blit(title_text, (200, 200))
+        pygame.display.flip()
+        
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -113,6 +118,8 @@ class CardGame:
                         if x <= mouse_x <= x + self.card_width and y <= mouse_y <= y + self.card_height:
                             chosen_card = self.player_hand[i]
                             print("Player chose:", chosen_card)
+                            self.turn_player_display()
+
 
                             # Serialize and send the chosen card to the server
                             try:
@@ -158,14 +165,16 @@ class CardGame:
                                 result = response.read()
 
     def display_cards(self):
-        self.screen.fill(self.WHITE)
+        background = pygame.image.load('cards/game_bg.jpg')  # Replace 'background.jpg' with the actual file name and extension
+        background = pygame.transform.scale(background, (self.screen_width, self.screen_height))
+        self.screen.blit(background, (0, 0))
 
         # Display the player's hand
         for i, card in enumerate(self.player_hand):
-            x = 100 + i * (self.card_width + 10)
+            x = 100 + i * (self.card_width - 80)
             y = self.screen_height - self.card_height - 100
-            pygame.draw.rect(self.screen, self.BLACK, (x, y, self.card_width, self.card_height))
-            pygame.draw.rect(self.screen, self.WHITE, (x + 2, y + 2, self.card_width - 4, self.card_height - 4))
+            # pygame.draw.rect(self.screen, self.BLACK, (x, y, self.card_width, self.card_height))
+            # pygame.draw.rect(self.screen, self.WHITE, (x, y, self.card_width, self.card_height))
             card_name = f"{card.rank}_of_{card.suit}".lower()
             card_image = self.card_images.get(card_name)
             if card_image:
@@ -174,8 +183,8 @@ class CardGame:
 
         # Display player scores
         font = pygame.font.Font(None, 30)
-        player1_score_text = font.render(f"{self.username} Score: " + str(self.player1_score), True, self.BLACK)
-        player2_score_text = font.render(f"{self.opponent_username} Score: " + str(self.player2_score), True, self.BLACK)
+        player1_score_text = font.render(f"{self.username}: " + str(self.player1_score), True, self.WHITE)
+        player2_score_text = font.render(f"{self.opponent_username}: " + str(self.player2_score), True, self.WHITE)
         self.screen.blit(player1_score_text, (20, 20))
         self.screen.blit(player2_score_text, (20, 60))
 
