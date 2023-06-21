@@ -21,12 +21,12 @@ class CardGame:
         pygame.display.set_caption('Card Game')
 
         # Set up card dimensions
-        self.card_width, self.card_height = 100, 140
+        self.card_width, self.card_height = 180, int(180 * 140 / 100)
 
         # Set up colors
         self.WHITE = (255, 255, 255)
         self.BLACK = (0, 0, 0)
-        self.CARD_IMAGE_WIDTH = 90
+        self.CARD_IMAGE_WIDTH = 180
 
         # Create a login screen and run it
         self.login_screen = LoginScreen()
@@ -169,6 +169,7 @@ class CardGame:
             card_name = f"{card.rank}_of_{card.suit}".lower()
             card_image = self.card_images.get(card_name)
             if card_image:
+                card_image = pygame.transform.scale(card_image, (self.card_width - 2, self.card_height - 2))  # Resize the card image
                 self.screen.blit(card_image, (x + 1, y + 2))
 
         # Display player scores
