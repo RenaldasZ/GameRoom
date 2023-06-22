@@ -5,7 +5,7 @@
 <h3>Game Room High Scores</h3>
 <ul>
     {% for player in top_players %}
-        <li> {{ player.user.username }} - {{ player.score }}</li>
+        <li> {{ player.username }} - Total Score: {{ player.total_score }} - Average Ratio: {{ player.avg_ratio }}</li><br>
     {% empty %}
         <p>No Player high scores found</p>
     {% endfor %}

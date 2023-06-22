@@ -1,6 +1,3 @@
-
-
-
 # wargame.py
 import pygame
 import socket
@@ -125,7 +122,7 @@ class CardGame:
                 self.process_chosen_card(chosen_card)
 
     def check_clicked_card(self, mouse_x, mouse_y):
-        for i, card in enumerate(self.player_hand[:-4]):
+        for i, card in enumerate(self.player_hand[:4]):
             x = 100 + i * (self.card_width - 40)
             y = self.screen_height - self.card_height - 100
 
@@ -186,8 +183,6 @@ class CardGame:
             self.screen.blit(game_tie, (200, 200))
             print("Tie! That\'s a miracle!")
 
-
-
     def send_player_score_to_server(self):
         self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
         self.headers = {
@@ -225,7 +220,7 @@ class CardGame:
         self.screen.blit(player2_score_text, (20, 60))
 
         if self.game_over == True:  
-            self.winner_display()  # Call the winner_display method
+            self.winner_display()
         pygame.display.flip()
 
     def run(self):
