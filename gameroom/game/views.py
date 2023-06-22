@@ -24,7 +24,7 @@ class HiScoreListView(View):
             score_count = player['score_count']
             avg_ratio = total_score / score_count if score_count != 0 else 0
 
-            players_with_avg_ratio.append({'username': username, 'total_score': total_score, 'avg_ratio': f'{avg_ratio}'})
+            players_with_avg_ratio.append({'username': username, 'total_score': total_score, 'avg_ratio': '{:.2f}'.format(avg_ratio)})
 
         context = {
             'top_players': players_with_avg_ratio
