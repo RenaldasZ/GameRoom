@@ -1,48 +1,3 @@
-{% comment %} <!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Game Room{% endblock title %}</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <header>
-        <ul class="nav">
-            <li class="logo">&#127918;Game Room</li>
-            <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'hiscore' %}">High score</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'profile' %}">&#128100; {{ user.get_username }}</a></li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-            {% else %}
-            <li><a href="{% url 'login' %}?next={{request.path}}">Login</a></li>
-            <li><a href="{% url 'signup' %}">Sign up</a></li>
-            {% endif %}
-            {% if user.is_authenticated %}
-                {% if user.is_staff or user.is_superuser %}
-                    <li><a href="{% url 'admin:index' %}">Admin</a></li>
-                {% endif %}
-            {% endif %}
-        </ul>
-    </header>
-    <main>
-        {% if messages %}
-        {% for message in messages %}
-            <p class="box box-{{ message.tags }}">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-    {% block content %}
-    {% endblock content %}</main>
-    <footer>
-        <p>&copy; 2023 REDTEAM Game Room</p>
-        <li><a href="https://discord.io/capython" target="_blank">Join our Discord</a></li>
-    </footer>
-</body>
-</html> {% endcomment %}
-
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
@@ -51,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><img src="https://www.part.lt/img/281ae289afc4a5dd3c4941c176fb6341686.png" /></title>
+    <title>Game Room/</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
@@ -138,23 +93,40 @@
 
 <body class="color-change-2x w3-black w3-text-white">
     <h1 class="tracking-in-expand">
-      <img src="https://www.part.lt/img/281ae289afc4a5dd3c4941c176fb6341105.png" />
+      <img onclick="window.location.href='{% url 'index' %}'" src="https://www.part.lt/img/281ae289afc4a5dd3c4941c176fb6341105.png" />
     </h1>
     <header>
-        <ul class="nav">
-          <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'index' %}'">Game Room</button>
-          <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'hiscore' %}'">High scores</button>
-            {% if user.is_authenticated %}
-            <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'profile' %}'">{{ user.get_username }}</button>
-            <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'logout' %}'">Logout</button>
-            {% else %}
-            <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'login' %}?next={{request.path}}'">Login</button>
-            <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'signup' %}'">Sign up</button>
-            {% endif %} {% if user.is_authenticated %} {% if user.is_staff or user.is_superuser %}
-            <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'admin:index' %}'">Admin</button>
-            {% endif %} {% endif %}
-        </ul>
-    </header>
+      <div class="nav">
+          <div class="w3-bar w3-left-align">
+              <!-- High scores -->
+              <button class="w3-button w3-black w3-round-large w3-text-white" style="width:24%" onclick="window.location.href='{% url 'hiscore' %}'">High scores</button>
+              
+              <!-- User Profile -->
+              {% if user.is_authenticated %}
+                  <button class="w3-button w3-black w3-round-large w3-text-white" style="width:24%" onclick="window.location.href='{% url 'profile' %}'">{{ user.get_username }}</button>
+              
+                  <!-- Logout -->
+                  <button class="w3-button w3-black w3-round-large w3-text-white" style="width:24%" onclick="window.location.href='{% url 'logout' %}'">Logout</button>
+              
+              {% else %}
+                  <!-- Login -->
+                  <button class="w3-button w3-black w3-round-large w3-text-white" style="width:24%" onclick="window.location.href='{% url 'login' %}?next={{request.path}}'">Login</button>
+              
+                  <!-- Sign up -->
+                  <button class="w3-button w3-black w3-round-large w3-text-white" style="width:24%" onclick="window.location.href='{% url 'signup' %}'">Sign up</button>
+              
+              {% endif %} 
+              
+              {% if user.is_authenticated %} 
+                  {% if user.is_staff or user.is_superuser %}
+                      <!-- Admin -->
+                      <button class="w3-button w3-black w3-round-large w3-text-white" style="width:24%" onclick="window.location.href='{% url 'admin:index' %}'">Admin</button>
+                  {% endif %} 
+              {% endif %}
+          </div>
+      </div>
+  </header>
+  
     <main>
         {% if messages %} {% for message in messages %}
         <p class="box box-{{ message.tags }}">{{ message }}</p>
@@ -162,6 +134,7 @@
     </main>
     <footer>
         <p>&copy; 2023 REDTEAM Game Room</p>
+        <button class="w3-button w3-white w3-round-xxlarge w3-text-black" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')">We are recruiting!</button>
         <button class="w3-button w3-white w3-round-xxlarge w3-text-black" onclick="window.open('https://discord.io/capython', '_blank')">Join our Discord</button>
     </footer>
 </body>
