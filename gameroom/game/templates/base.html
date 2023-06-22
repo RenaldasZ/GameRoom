@@ -142,23 +142,16 @@
     </h1>
     <header>
         <ul class="nav">
-            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'index' %}">Game Room</a></button>
-            </p>
-            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'hiscore' %}">High scores</a></button>
-            </p>
+          <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'index' %}'">Game Room</button>
+          <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'hiscore' %}'">High scores</button>
             {% if user.is_authenticated %}
-            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'profile' %}">{{ user.get_username }}</a></button>
-            </p>
-            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'logout' %}">Logout</a></button>
-            </p>
+            <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'profile' %}'">{{ user.get_username }}</button>
+            <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'logout' %}'">Logout</button>
             {% else %}
-            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'login' %}?next={{request.path}}">Login</a></button>
-            </p>
-            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'signup' %}">Sign up</a></button>
-            </p>
+            <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'login' %}?next={{request.path}}'">Login</button>
+            <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'signup' %}'">Sign up</button>
             {% endif %} {% if user.is_authenticated %} {% if user.is_staff or user.is_superuser %}
-            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'admin:index' %}">Admin</a></button>
-            </p>
+            <button class="w3-button w3-black w3-round-large w3-text-white" onclick="window.location.href='{% url 'admin:index' %}'">Admin</button>
             {% endif %} {% endif %}
         </ul>
     </header>
@@ -169,8 +162,7 @@
     </main>
     <footer>
         <p>&copy; 2023 REDTEAM Game Room</p>
-        <p button class="w3-button w3-white w3-round-xxlarge w3-text-black"><a href="https://discord.io/capython" target="_blank">Join our Discord</a></button>
-        </p>
+        <button class="w3-button w3-white w3-round-xxlarge w3-text-black" onclick="window.open('https://discord.io/capython', '_blank')">Join our Discord</button>
     </footer>
 </body>
 
