@@ -33,11 +33,9 @@ body {
   min-height: 100vh;
   padding: 0;
   margin: 0;
-  background: linear-gradient(to bottom, #FFCC00, #FF9900);
 }
 
 header {
-  background-color: #FF6600;
   padding: 0.2rem;
   color: #FFFFFF;
 }
@@ -84,7 +82,7 @@ main {
 }
 
 footer {
-  background-color: #FF6600;
+  background-color: #000000;
   padding: 1rem;
   color: #FFFFFF;
   text-align: center;
