@@ -75,10 +75,20 @@ header ul.nav a:hover {
   text-decoration: underline;
 }
 
+@keyframes color-change-2x {
+  0% {
+      background: #19dcea;
+  }
+  100% {
+      background: #b22cff;
+  }
+}
+
 main {
   flex-grow: 1;
   padding: 2rem;
   background-color: #FFE6CC;
+  animation: color-change-2x 10s linear infinite alternate both;
 }
 
 footer {
