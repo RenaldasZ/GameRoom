@@ -1,14 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}Welcome to Game Room {{ block.super }}{% endblock title %}
-
 {% block content %}
 <header>
     <h1>Welcome to Card War Game</h1>
     <p>Prepare for an epic battle of cards!</p>
 </header>
-
 <main>
     {% block about_game %}
     <h2>About the Game</h2>
@@ -17,20 +14,20 @@
         <p>Devise cunning tactics to defeat your adversaries in epic card duels.</p>
     </section>
     {% endblock about_game %}
-
+    <br>
     {% block how_to_play %}
     <section>
         <h2>How to Play</h2>
         <p>Learn the rules, master the strategies, and become a legendary card warrior:</p>
         <ul>
             <ul>
-                <p button class="w3-button w3-black w3-round-xxlarge w3-text-white"><a center>Engage in intense card battles against other players online.</a></p>
+                <p button class="w3-button w3-black w3-round-xxlarge w3-text-white"><a>Engage in intense card battles against other players online.</a></p>
             </ul>
             <ul>
-                <p button class="w3-button w3-black w3-round-xxlarge w3-text-white"><a center>Strategically play your cards, and outsmart your opponents.</a></p>
+                <p button class="w3-button w3-black w3-round-xxlarge w3-text-white"><a>Strategically play your cards, and outsmart your opponents.</a></p>
             </ul>
             <ul>
-                <p button class="w3-button w3-black w3-round-xxlarge w3-text-white"><a center>Defeat your opponents and climb the ranks to become the ultimate card war champion!</a></p>
+                <p button class="w3-button w3-black w3-round-xxlarge w3-text-white"><a>Defeat your opponents and climb the ranks to become the ultimate card war champion!</a></p>
             </ul>
           </ul>
     </section>

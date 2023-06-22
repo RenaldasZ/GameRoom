@@ -83,6 +83,13 @@ header ul.nav a:hover {
   }
 }
 
+body {
+  background-image: url("C:\Users\tabis\OneDrive\Desktop\vecteezy_felt-dark-green-soft-rough-textile-material-background_15234091_91.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
 main {
   flex-grow: 1;
   padding: 2rem;

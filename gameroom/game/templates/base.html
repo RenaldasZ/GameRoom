@@ -12,11 +12,6 @@
 </head>
 
 <style>
-    .w3-btn {
-        width: 150px;
-        animation: pulsateColor 2s infinite;
-    }
-
     .color-change-2x {
         animation: color-change-2x 10s linear infinite alternate both;
     }
@@ -29,70 +24,10 @@
             background: #b22cff;
         }
     }
-
-    .tracking-in-expand {
-        animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
-    }
-
-    @keyframes tracking-in-expand {
-        0% {
-            letter-spacing: -0.5em;
-            opacity: 0;
-        }
-        40% {
-            opacity: 0.6;
-        }
-        100% {
-            opacity: 1;
-        }
-    }
-
-    .bounce-top {
-        animation: bounce-top 0.7s 0.25s both;
-    }
-
-    @keyframes bounce-top {
-        0% {
-            transform: translateY(-45px);
-            animation-timing-function: ease-in;
-            opacity: 1;
-        }
-        24% {
-            opacity: 1;
-        }
-        40% {
-            transform: translateY(-24px);
-            animation-timing-function: ease-in;
-        }
-        65% {
-            transform: translateY(-12px);
-            animation-timing-function: ease-in;
-        }
-        82% {
-            transform: translateY(-6px);
-            animation-timing-function: ease-in;
-        }
-        93% {
-            transform: translateY(-4px);
-            animation-timing-function: ease-in;
-        }
-        25%,
-        55%,
-        75%,
-        87% {
-            transform: translateY(0px);
-            animation-timing-function: ease-out;
-        }
-        100% {
-            transform: translateY(0px);
-            animation-timing-function: ease-out;
-            opacity: 1;
-        }
-    }
 </style>
 
 <body class="color-change-2x w3-black w3-text-white">
-    <h1 class="tracking-in-expand">
+    <h1>
       <img onclick="window.location.href='{% url 'index' %}'" src="https://www.part.lt/img/281ae289afc4a5dd3c4941c176fb6341105.png" />
     </h1>
     <header>
