@@ -47,7 +47,7 @@
 {% load static %}
 <html lang="en">
 
-<head>
+<head class="w3-text-black">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -136,30 +136,30 @@
     }
 </style>
 
-<body class="color-change-2x">
+<body class="color-change-2x w3-black w3-text-white">
     <h1 class="tracking-in-expand">
         Game Room
     </h1>
     <header>
         <ul class="nav">
-            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top">Game Room</button>
+            <p button class="w3-button w3-black w3-round-large w3-text-white">Game Room</button>
             </p>
-            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'index' %}">Home</a></button>
+            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'index' %}">Home</a></button>
             </p>
-            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'hiscore' %}">High scores</a></button>
+            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'hiscore' %}">High scores</a></button>
             </p>
             {% if user.is_authenticated %}
-            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'profile' %}">{{ user.get_username }}</a></button>
+            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'profile' %}">{{ user.get_username }}</a></button>
             </p>
-            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'logout' %}">Logout</a></button>
+            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'logout' %}">Logout</a></button>
             </p>
             {% else %}
-            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'login' %}?next={{request.path}}">Login</a></button>
+            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'login' %}?next={{request.path}}">Login</a></button>
             </p>
-            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'signup' %}">Sign up</a></button>
+            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'signup' %}">Sign up</a></button>
             </p>
             {% endif %} {% if user.is_authenticated %} {% if user.is_staff or user.is_superuser %}
-            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'admin:index' %}">Admin</a></button>
+            <p button class="w3-button w3-black w3-round-large w3-text-white"><a class="w3-text-white" href="{% url 'admin:index' %}">Admin</a></button>
             </p>
             {% endif %} {% endif %}
         </ul>
@@ -171,7 +171,7 @@
     </main>
     <footer>
         <p>&copy; 2023 REDTEAM Game Room</p>
-        <p button class="w3-button w3-black w3-round-xxlarge w3-text-white"><a href="https://discord.io/capython" target="_blank">Join our Discord</a></button>
+        <p button class="w3-button w3-white w3-round-xxlarge w3-text-black"><a href="https://discord.io/capython" target="_blank">Join our Discord</a></button>
         </p>
     </footer>
 </body>
