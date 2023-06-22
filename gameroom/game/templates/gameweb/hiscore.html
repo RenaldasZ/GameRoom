@@ -3,11 +3,13 @@
 {% block title %}High score at {{ block.super }}{% endblock title %}
 {% block content %}
 <h3>Game Room High Scores</h3>
-<ul>
+<div class="container">
+<ul class="scores-list">
     {% for player in top_players %}
-        <li> {{ player.username }} - Total Score: {{ player.total_score }} - Average Ratio: {{ player.avg_ratio }}</li><br>
+    <p button class="w3-button w3-black w3-round-large w3-text-white"<li> {{ player.username }} - Total Score: {{ player.total_score }} - Average Ratio: {{ player.avg_ratio }}</li><br>>
     {% empty %}
         <p>No Player high scores found</p>
     {% endfor %}
 </ul>
+</div>
 {% endblock content %}

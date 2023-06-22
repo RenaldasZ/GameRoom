@@ -11,7 +11,6 @@ html {
   border: 1px solid #000000;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   color: #FFFFFF;
-  background-color: #FF9900;
 }
 
 p,
@@ -87,9 +86,9 @@ header ul.nav a:hover {
 main {
   flex-grow: 1;
   padding: 2rem;
-  background-color: #FFE6CC;
-  animation: color-change-2x 10s linear infinite alternate both;
+  animation: color-change-2x 9s linear infinite alternate both;
 }
+
 
 footer {
   background-color: #000000;
@@ -114,11 +113,7 @@ footer p {
 }
 
 li {
-  display: inline-block;
-  background: radial-gradient(circle, rgba(255, 204, 0, 1), rgba(255, 153, 0, 1));
   color: #313131;
-  margin-right: 10px;
-  border-radius: 50%;
   padding: 15px;
   text-align: center;
   line-height: 1;
@@ -143,4 +138,22 @@ li:hover {
   }
 }
 
+
+.container p {
+  display: table;
+  justify-content: center;
+  align-items: center;
+}
+
+.scores-list {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+.scores-list li {
+  margin-bottom: 10px;
+  border-radius: 12px;
+  padding: 10px;
+}
 
