@@ -7,7 +7,7 @@ class LoginScreen:
         self.screen_width, self.screen_height = 800, 600
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption('Login Screen')
-        self.WHITE = (255, 255, 255)
+        self.WHITE = (255, 255, 255, 200)
         self.BLACK = (0, 0, 0)
         self.font = pygame.font.Font(None, 32)
         self.username = ''

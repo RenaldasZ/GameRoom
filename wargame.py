@@ -42,13 +42,13 @@ class CardGame:
         # Flag to indicate if the game is over
         self.game_over = False
 
-        # Connect to the server
+        # Connect to django and game server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_address = ('127.0.0.1', 5000)
-        self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
+        self.django_server = http.client.HTTPConnection("127.0.0.1", 8000)
         self.headers = {
         "Accept": "*/*",
-        "User-Agent": "war game client",
+        "User-Agent": "War game client",
         "Content-Type": "application/json" 
         }
         payload = json.dumps({
@@ -56,8 +56,8 @@ class CardGame:
         "password": self.password
         })
         try:
-            self.score_server.request("POST", "/api-token-auth/", payload, self.headers)
-            response = self.score_server.getresponse()
+            self.django_server.request("POST", "/api-token-auth/", payload, self.headers)
+            response = self.django_server.getresponse()
         except Exception as e:
             print(e)
         else:
@@ -65,6 +65,7 @@ class CardGame:
             print(result['token'])
             self.score_server_token = result['token']
 
+        #Connect to game server
         try:
             self.client_socket.connect(self.server_address)
             print('Connected to:', self.server_address)
@@ -72,6 +73,8 @@ class CardGame:
             print('Failed to connect to the server. Please make sure the server is running.')
             pygame.quit()
             return
+        
+        #Send self username and receive opponent username and own card deck
         try:
             self.client_socket.sendall(pickle.dumps(self.username))
             self.opponent_username = pickle.loads(self.client_socket.recv(1024))
@@ -81,7 +84,7 @@ class CardGame:
             self.client_socket.close()
             pygame.quit()
             return
-    
+
         # Initialize player scores
         self.player1_score = 0
         self.player2_score = 0   
@@ -184,7 +187,7 @@ class CardGame:
             print("Tie! That\'s a miracle!")
 
     def send_player_score_to_server(self):
-        self.score_server = http.client.HTTPConnection("127.0.0.1", 8000)
+        self.django_server = http.client.HTTPConnection("127.0.0.1", 8000)
         self.headers = {
             "Accept": "*/*",
             "User-Agent": "war game client",
@@ -194,8 +197,8 @@ class CardGame:
         payload = json.dumps({
             "score": self.player1_score
         })
-        self.score_server.request("POST", "/player/", payload, self.headers)
-        response = self.score_server.getresponse()
+        self.django_server.request("POST", "/player/", payload, self.headers)
+        response = self.django_server.getresponse()
         result = response.read()
 
     def display_cards(self):
