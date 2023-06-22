@@ -143,6 +143,7 @@ li:hover {
   display: table;
   justify-content: center;
   align-items: center;
+  border-radius: 50px;
 }
 
 .scores-list {
@@ -153,7 +154,6 @@ li:hover {
 
 .scores-list li {
   margin-bottom: 10px;
-  border-radius: 12px;
   padding: 10px;
 }
 
