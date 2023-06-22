@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 {% load static %}
 <html lang="en">
 <head>
@@ -38,7 +38,142 @@
     {% endblock content %}</main>
     <footer>
         <p>&copy; 2023 REDTEAM Game Room</p>
-        <li><a href="https://discord.gg/AryVVZRS" target="_blank">Join Discord</a></li>
+        <li><a href="https://discord.io/capython" target="_blank">Join our Discord</a></li>
     </footer>
 </body>
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Room</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<style>
+    .w3-btn {
+        width: 150px;
+        animation: pulsateColor 2s infinite;
+    }
+
+    .color-change-2x {
+        animation: color-change-2x 10s linear infinite alternate both;
+    }
+
+    @keyframes color-change-2x {
+        0% {
+            background: #19dcea;
+        }
+        100% {
+            background: #b22cff;
+        }
+    }
+
+    .tracking-in-expand {
+        animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+    }
+
+    @keyframes tracking-in-expand {
+        0% {
+            letter-spacing: -0.5em;
+            opacity: 0;
+        }
+        40% {
+            opacity: 0.6;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .bounce-top {
+        animation: bounce-top 0.7s 0.25s both;
+    }
+
+    @keyframes bounce-top {
+        0% {
+            transform: translateY(-45px);
+            animation-timing-function: ease-in;
+            opacity: 1;
+        }
+        24% {
+            opacity: 1;
+        }
+        40% {
+            transform: translateY(-24px);
+            animation-timing-function: ease-in;
+        }
+        65% {
+            transform: translateY(-12px);
+            animation-timing-function: ease-in;
+        }
+        82% {
+            transform: translateY(-6px);
+            animation-timing-function: ease-in;
+        }
+        93% {
+            transform: translateY(-4px);
+            animation-timing-function: ease-in;
+        }
+        25%,
+        55%,
+        75%,
+        87% {
+            transform: translateY(0px);
+            animation-timing-function: ease-out;
+        }
+        100% {
+            transform: translateY(0px);
+            animation-timing-function: ease-out;
+            opacity: 1;
+        }
+    }
+</style>
+
+<body class="color-change-2x">
+    <h1 class="tracking-in-expand">
+        Game Room
+    </h1>
+    <header>
+        <ul class="nav">
+            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top">Game Room</button>
+            </p>
+            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'index' %}">Home</a></button>
+            </p>
+            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'hiscore' %}">High scores</a></button>
+            </p>
+            {% if user.is_authenticated %}
+            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'profile' %}">{{ user.get_username }}</a></button>
+            </p>
+            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'logout' %}">Logout</a></button>
+            </p>
+            {% else %}
+            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'login' %}?next={{request.path}}">Login</a></button>
+            </p>
+            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'signup' %}">Sign up</a></button>
+            </p>
+            {% endif %} {% if user.is_authenticated %} {% if user.is_staff or user.is_superuser %}
+            <p button class="w3-button w3-black w3-round-xxlarge w3-text-white bounce-top"><a class="w3-text-white" href="{% url 'admin:index' %}">Admin</a></button>
+            </p>
+            {% endif %} {% endif %}
+        </ul>
+    </header>
+    <main>
+        {% if messages %} {% for message in messages %}
+        <p class="box box-{{ message.tags }}">{{ message }}</p>
+        {% endfor %} {% endif %} {% block content %} {% endblock content %}
+    </main>
+    <footer>
+        <p>&copy; 2023 REDTEAM Game Room</p>
+        <p button class="w3-button w3-black w3-round-xxlarge w3-text-white"><a href="https://discord.io/capython" target="_blank">Join our Discord</a></button>
+        </p>
+    </footer>
+</body>
+
 </html>
