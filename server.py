@@ -83,15 +83,14 @@ def main():
     player1_socket.sendall(pickle.dumps(player2_username))
     player2_socket.sendall(pickle.dumps(player1_username))
 
-
     # Send the initial hands to the players
     player1_hand = deck[:26]
     player2_hand = deck[26:]
     send_initial_hands(player1_socket, player1_hand)
     send_initial_hands(player2_socket, player2_hand)
 
-    # django_match_id = pickle.loads(player1_socket.recv(1024))
-    # player2_socket.sendall(pickle.dumps(django_match_id))
+    django_match_id = pickle.loads(player1_socket.recv(1024))
+    player2_socket.sendall(pickle.dumps(django_match_id))
 
     # Send and receive data with the players
     while True:
@@ -125,5 +124,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-

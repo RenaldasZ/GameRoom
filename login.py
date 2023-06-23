@@ -1,4 +1,3 @@
-#login.py
 import pygame
 from pygame.locals import *
 
@@ -109,4 +108,3 @@ class CardGame:
         # ... (the rest of your code)
 
 CardGame()
-
