@@ -1,3 +1,5 @@
+
+#views.py
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render
@@ -49,7 +51,7 @@ class PlayerList(generics.ListCreateAPIView):
 
 class MatchCreateList(generics.ListCreateAPIView):
     serializer_class = serializers.MatchSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
 
     def get_queryset(self, *args, **kwargs):
         return models.Match.objects.filter(player2__isnull=True)
