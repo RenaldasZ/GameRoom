@@ -1,4 +1,3 @@
-# wargame.py
 import pygame
 import socket
 import pickle
@@ -85,40 +84,42 @@ class CardGame:
             pygame.quit()
             return
         
-        # #Creating match room
-        # if self.opponent_username != 'ren':
-        #     self.headers = {
-        #         "Accept": "*/*",
-        #         "User-Agent": "war game client",
-        #         "Authorization": "Token " + self.score_server_token,
-        #     }
-        #     payload = ""
-        #     try:
-        #         self.django_server.request("POST", "/match/", payload, self.headers)
-        #         response = self.django_server.getresponse()
-        #     except Exception as e:
-        #         print(e)
-        #     else:
-        #         answer = json.loads(response.read())
-        #         self.django_match_id = answer['id']
-        #         print(f"django id: {self.django_match_id}")
-        #         self.client_socket.sendall(pickle.dumps(self.django_match_id))
-        # else:
-        #     self.headers = {
-        #         "Accept": "*/*",
-        #         "User-Agent": "war game client",
-        #         "Authorization": "Token " + self.score_server_token,
-        #     }
-        #     payload = ""
-        #     try:
-        #         self.django_match_id = pickle.loads(self.client_socket.recv(1024))
-        #         self.django_server.request("PUT", f"/match/{self.django_match_id}/", payload, self.headers)
-        #         response = self.django_server.getresponse()
-        #     except Exception as e:
-        #         print(e)
-        #     else:
-        #         django_match_id = response.read()
-        #         print(django_match_id.decode("utf-8"))
+        ########################################## Unfinished. #############################################################
+        #Creating match room
+        if self.opponent_username != 'ren':
+            self.headers = {
+                "Accept": "*/*",
+                "User-Agent": "war game client",
+                "Authorization": "Token " + self.score_server_token,
+            }
+            payload = ""
+            try:
+                self.django_server.request("POST", "/match/", payload, self.headers)
+                response = self.django_server.getresponse()
+            except Exception as e:
+                print(e)
+            else:
+                answer = json.loads(response.read())
+                self.django_match_id = answer['id']
+                print(f"django id: {self.django_match_id}")
+                self.client_socket.sendall(pickle.dumps(self.django_match_id))
+        else:
+            self.headers = {
+                "Accept": "*/*",
+                "User-Agent": "war game client",
+                "Authorization": "Token " + self.score_server_token,
+            }
+            payload = ""
+            try:
+                self.django_match_id = pickle.loads(self.client_socket.recv(1024))
+                self.django_server.request("PUT", f"/match/{self.django_match_id}/", payload, self.headers)
+                response = self.django_server.getresponse()
+            except Exception as e:
+                print(e)
+            else:
+                django_match_id = response.read()
+                print(django_match_id.decode("utf-8"))
+        ########################################## Unfinished #############################################################
 
         # Initialize player scores
         self.player1_score = 0
