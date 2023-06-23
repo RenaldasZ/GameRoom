@@ -15,7 +15,7 @@ class Match(models.Model):
         verbose_name_plural = _("matchs")
 
     def __str__(self):
-        return f"{self.player1.get_username()}:{self.player2.get_username()}"
+        return f"{self.played_at}"
 
     def get_absolute_url(self):
         return reverse("match_detail", kwargs={"pk": self.pk})
